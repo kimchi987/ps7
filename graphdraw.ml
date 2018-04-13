@@ -19,7 +19,8 @@ open Graphobj ;;
 let cFRAMEDELAY = 1. /. 1000. ;;
 (* Macimum number of frames (time steps) before giving up on reaching
    quiescence *)
-let cMAXFRAMES = 2000 ;;
+(*let cMAXFRAMES = 2000 ;;*)
+let cMAXFRAMES = 2000
 (* Debug -- show constraints *)
 let cSHOWCONSTRAINTS = ref false ;;
 let cSTEPPING = ref false ;;

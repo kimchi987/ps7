@@ -42,10 +42,12 @@ let draw_triangle (pt : point) (dir : point) (scale : float) : unit =
   let right = 
     (pt#minus (dir#scale scale))#plus (ortho#scale (-. scale /. 2.0)) in
   fill_poly [| pt#round; left#round; right#round |] ;;
-                                                 
-(* Minimum and maximum elements in a list *)
+                                          
+let minimum  = CS51.reduce min ;;
+let maximum  = CS51.reduce max ;;       
+(* Minimum and maximum elements in a list 
 let minimum = CS51.reduce min ;;
-let maximum = CS51.reduce max ;;
+let maximum = CS51.reduce max ;;*)
 
 (*......................................................................
   Graphical objects
@@ -127,6 +129,32 @@ class circle ?(label : string = "")
               w : int            width of the rectangle
               h : int            height of the rectangle
  *)
+ class rectangle ?(label : string = "")
+                 ?(col : color = black)
+                 ?(layer : int = 20)
+                 ?(textcol : color = red)
+                 ?(linewidth : int = cLINEWIDTH) 
+                 (m : point)
+                 (w : int)
+                 (h : int) =
+  object
+  inherit drawable ~label ~layer col
+  val anchor : point = m
+  val width : int = w
+  val height : int = h 
+  val textcolor : color = textcol
+  val linewidth : int = linewidth
+                     
+  method draw =
+    let (x, y) as p = anchor#round in
+    set_line_width linewidth;
+    set_color background;
+    fill_rect (x - width/2) (y - height/2) width height;
+    set_color color;
+    draw_rect (x - width/2) (y - height/2) width height;
+    set_color textcolor;
+    draw_text_centered label p
+end
 
      
 (* Class square -- nodes depicted with a small square
@@ -138,7 +166,31 @@ class circle ?(label : string = "")
               m : point          center of the square
               w : int            width of the square
  *)
-   
+
+  class square ?(label : string = "")
+               ?(col : color = black)
+               ?(layer : int = 20)
+               ?(textcol : color = red)
+               ?(linewidth : int = cLINEWIDTH) 
+               (m : point)
+               (w : int) =
+  object
+  inherit drawable ~label ~layer col
+  val anchor : point = m
+  val width : int = w
+  val textcolor : color = textcol
+  val linewidth : int = linewidth
+                     
+  method draw =
+    let (x, y) as p = anchor#round in
+    set_line_width linewidth;
+    set_color background;
+    fill_rect (x - width/2) (y - width/2) width width;
+    set_color color;
+    draw_rect (x - width/2) (y - width/2) width width;
+    set_color textcolor;
+    draw_text_centered label p
+end
     
 (* Class edge -- an edge between two points
    Arguments: ?label : string    optional label for the edge (default: "")
@@ -150,7 +202,31 @@ class circle ?(label : string = "")
               target : point     target point of the edge
  *)
    
-     
+class edge ?(label : string = "")
+           ?(col : color = black)
+           ?(layer : int = 10)
+           ?(textcol : color = red)
+           ?(linewidth : int = cLINEWIDTH) 
+           (source : point)
+           (target : point) =
+  object
+  inherit drawable ~label ~layer col
+  val anchor : point = source
+  val anchor2 : point = target
+
+  val textcolor : color = textcol
+  val linewidth : int = linewidth
+                     
+  method draw =
+    let (x, y) as p = anchor#round in
+    let (x2, y2)  = anchor2#round in 
+    set_line_width linewidth;
+    set_color col;
+    draw_poly_line [|(x, y); (x2, y2)|];
+    set_color color;
+    set_color textcolor;
+    draw_text_centered label p
+end
 (* Class zone -- a zone box that surrounds a set of points
    Arguments: ?label : string      optional label for the edge (default: "")
                                    to be placed centered just underneath the box
@@ -162,6 +238,76 @@ class circle ?(label : string = "")
               ?linewidth : int     linewidth to draw the square (cLINEWIDTH)
               points : point list  points defining the zone to be enclosed
  *)
+
+ class zone ?(label : string = "")
+            ?(col : color = black)
+            ?(layer : int = 0)
+            ?(textcol : color = red)
+            ?(border : int = 20)
+            ?(linewidth : int = cLINEWIDTH) 
+            (points : point list) =
+  object
+  inherit drawable ~label ~layer col
+  val textcolor : color = textcol
+  val linewidth : int = linewidth
+
+  method draw = 
+    let rec splitx (lst : point list) (emp : float list) : float list = 
+      match lst with
+      | hd :: tl ->  hd#x :: (splitx tl emp)
+      | [] -> emp in 
+
+
+    let rec splity (lst : point list) (emp : float list) : float list = 
+      match lst with
+      | hd :: tl -> hd#y :: (splity tl emp)
+      | [] -> emp in
+
+    (*let rec splitx (lst : point list) (emp : float list) : float list = 
+      match lst with
+      | hd :: tl ->  let emp = hd#x :: [] in splitx tl emp
+      | [] -> emp in 
+
+
+    let rec splity (lst : point list) (emp : float list) : float list = 
+      match lst with
+      | hd :: tl -> let emp = hd#y :: [] in splity tl emp
+      | [] -> emp in*)
+
+    let minix = minimum (splitx points []) in 
+    let miniy = minimum (splity points []) in 
+    let maxix = maximum (splitx points []) in
+    let maxiy = maximum (splity points []) in 
+    set_line_width linewidth;
+    set_color col;
+    (*fill_rect (int_of_float(minix -. float_of_int border)) (int_of_float(miniy -. float_of_int border)) (int_of_float(maxix +. float_of_int border)) (int_of_float(maxiy +. float_of_int border));*)
+    set_color color;
+    draw_rect ((int_of_float minix) - border) ((int_of_float miniy) - border) ((int_of_float (maxix -. minix) ) + 2*border) ((int_of_float (maxiy -. miniy)) + 2*border);
+    set_color textcolor   
+
+    (*method draw =
+    let (x, y) = (minimum points)#pos in
+    let (x', y') = (maximum points)#pos in 
+    set_line_width linewidth;
+    set_color background;
+    fill_rect (int_of_float(x -. float_of_int border)) (int_of_float(y -. float_of_int border)) (int_of_float(x' +. float_of_int (2*border))) (int_of_float(y' +. float_of_int (2*border)));
+    set_color color;
+    draw_rect (int_of_float(x -. float_of_int border)) (int_of_float(y -. float_of_int border)) (int_of_float(x' +. float_of_int (2*border))) (int_of_float(y' +. float_of_int (2*border)));
+    set_color textcolor*)
+
+    (*method draw =
+    let (x, y) = (minimum points)#pos in
+    let (x', y') = (maximum points)#pos in 
+    set_line_width linewidth;
+    set_color background;
+    (*fill_rect (int_of_float(x -. float_of_int border)) (int_of_float(y -. float_of_int border)) (int_of_float(x' +. float_of_int (2*border))) (int_of_float(y' +. float_of_int (2*border)));*)
+    set_color color;
+    draw_rect (int_of_float x - border) (int_of_float y - border) (int_of_float x' + (2*border)) (int_of_float y' + (2*border));
+    set_color textcolor*)
+ 
+
+
+end
      
 (*======================================================================
 Time estimate

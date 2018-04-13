@@ -25,13 +25,57 @@ class mass =
       (* The mass itself *)
       val mass = m
 
-      (*................................................................
-      Your part goes here: Provide the implementations of the move and
-      restore_pos methods. The move method should differ from the
-      corresponding method for points in that the coordinates that the
-      mass moves to should be "clipped" to stay within the frame, as
-      defined by cFRAMESIZE above.
-      ..............................................................*)
+        (*................................................................
+        Your part goes here: Provide the implementations of the move and
+        restore_pos methods. The move method should differ from the
+        corresponding method for points in that the coordinates that the
+        mass moves to should be "clipped" to stay within the frame, as
+        defined by cFRAMESIZE above.
+        ..............................................................*)
+      
+       val mutable green = new point initx inity
+       val mutable green' = new point initx inity
+       val mutable green_temp = new point initx inity
+
+        method! move (tucker : point) : unit = 
+        let (x', y') = tucker#pos in  
+          
+         
+          green <- new point (min (max x' 0.) (float_of_int cFRAMESIZE)) (min (max y' 0.) (float_of_int cFRAMESIZE));
+          super#move green
+        
+
+      (* 
+      method move (tucker : point) : unit = 
+        let (x', y') = tucker#pos in  
+          let kimchi = new point x y in
+          kimchi <- (min (max x' 0.) (float_of_int cFRAMESIZE)) (min (max y' 0.) (float_of_int cFRAMESIZE))
+
+       method move (tucker : point) : unit = 
+        let (x', y') = tucker#pos in
+        x <- min (max x' 0.) (float_of_int cFRAMESIZE);
+        y <- min (max y' 0.) (float_of_int cFRAMESIZE);
+      
+        method move (tucker : point) : unit = 
+        let (x', y') = tucker#pos in  
+          let kimchi = new point x y in
+          kimchi <- (min (max x' 0.) (float_of_int cFRAMESIZE)) (min (max y' 0.) (float_of_int cFRAMESIZE))
+
+     *)
+
+      method restore_pos : unit = 
+        
+        green_temp <- green;
+        green <- green';
+        green' <- green_temp;
+        super#move green
+      
+
+
+
+
+
+
 
       (* Forces on the mass *)
       val frc : point = new point 0. 0.    (* accumulator for forces *)
