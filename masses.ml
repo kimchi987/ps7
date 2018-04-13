@@ -38,44 +38,17 @@ class mass =
        val mutable green_temp = new point initx inity
 
         method! move (tucker : point) : unit = 
-        let (x', y') = tucker#pos in  
-          
-         
-          green <- new point (min (max x' 0.) (float_of_int cFRAMESIZE)) (min (max y' 0.) (float_of_int cFRAMESIZE));
+        let (x', y') = tucker#pos in   
+          green <- new point (min (max x' 0.) 
+                    (float_of_int cFRAMESIZE)) 
+                    (min (max y' 0.) (float_of_int cFRAMESIZE));
           super#move green
-        
 
-      (* 
-      method move (tucker : point) : unit = 
-        let (x', y') = tucker#pos in  
-          let kimchi = new point x y in
-          kimchi <- (min (max x' 0.) (float_of_int cFRAMESIZE)) (min (max y' 0.) (float_of_int cFRAMESIZE))
-
-       method move (tucker : point) : unit = 
-        let (x', y') = tucker#pos in
-        x <- min (max x' 0.) (float_of_int cFRAMESIZE);
-        y <- min (max y' 0.) (float_of_int cFRAMESIZE);
-      
-        method move (tucker : point) : unit = 
-        let (x', y') = tucker#pos in  
-          let kimchi = new point x y in
-          kimchi <- (min (max x' 0.) (float_of_int cFRAMESIZE)) (min (max y' 0.) (float_of_int cFRAMESIZE))
-
-     *)
-
-      method restore_pos : unit = 
-        
+      method restore_pos : unit =    
         green_temp <- green;
         green <- green';
         green' <- green_temp;
         super#move green
-      
-
-
-
-
-
-
 
       (* Forces on the mass *)
       val frc : point = new point 0. 0.    (* accumulator for forces *)
@@ -112,4 +85,4 @@ future assignments.
 ......................................................................*)
 
 let minutes_spent_on_part () : int =
-  failwith "no time estimate provided for masses" ;;
+  360 ;;

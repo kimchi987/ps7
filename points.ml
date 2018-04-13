@@ -7,7 +7,6 @@
 class point (x0 : float) (y0 : float) =   
 object (this)
 
-	(*chen says this is fucking wrong, method x calls the value of x*)
 	val mutable x = x0
 	val mutable y = y0
 	method x = x
@@ -58,4 +57,4 @@ future assignments.
 ......................................................................*)
 
 let minutes_spent_on_part () : int =
-  failwith "no time estimate provided for points" ;;
+  360 ;;

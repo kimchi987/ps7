@@ -30,15 +30,33 @@ let example () : unit =
 
 
 
-  	let sa = new rectangle ~label: "" (ma :> point) 360 240 in
-  	let sb = new circle ~label: "" (mb :> point) 100 in
-  	let sc = new rectangle ~label: "CANON" (mc :> point) 120 60 in 
-  	let sd = new rectangle ~label: "flash" (md :> point) 80 40 in 
-  	let se = new circle ~label: "24-70mm f/2.8" ~col:(Graphics.red) (me :> point) 80 in 
-  	let sf = new circle ~label: "Lens cap" ~col:(Graphics.blue) (mf :> point) 80 in 
-  	let sg = new square ~label: "Battery" ~col:(Graphics.green) (mg :> point) 70 in 
-  	let sh = new rectangle ~label: "SD Card" ~col:(Graphics.yellow) (mh :> point) 60 40 in 
-  	let si = new rectangle ~label: "Tripod" ~col:(Graphics.cyan) (mi :> point) 20 200 in 
+  	let sa = 
+  		new rectangle ~label: "" 
+  			(ma :> point) 360 240 in
+  	let sb = 
+  		new circle ~label: "" 
+  			(mb :> point) 100 in
+  	let sc = 
+  		new rectangle ~label: "CANON" 
+  			(mc :> point) 120 60 in 
+  	let sd = 
+  		new rectangle ~label: "flash" 
+  			(md :> point) 80 40 in 
+  	let se = 
+  		new circle ~label: "24-70mm f/2.8" ~col:(Graphics.red) 
+  			(me :> point) 80 in 
+  	let sf = 
+  		new circle ~label: "Lens cap" ~col:(Graphics.blue) 
+  			(mf :> point) 80 in 
+  	let sg = 
+  		new square ~label: "Battery" ~col:(Graphics.green) 
+  			(mg :> point) 70 in 
+  	let sh = 
+  		new rectangle ~label: "SD Card" ~col:(Graphics.yellow) 
+  			(mh :> point) 60 40 in 
+  	let si = 
+  		new rectangle ~label: "Tripod" ~col:(Graphics.cyan) 
+  			(mi :> point) 20 200 in 
  
 
   	x11_solve [ma; mb; mc; md; me; mf; mg; mh; mi]

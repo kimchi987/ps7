@@ -45,9 +45,8 @@ let draw_triangle (pt : point) (dir : point) (scale : float) : unit =
                                           
 let minimum  = CS51.reduce min ;;
 let maximum  = CS51.reduce max ;;       
-(* Minimum and maximum elements in a list 
-let minimum = CS51.reduce min ;;
-let maximum = CS51.reduce max ;;*)
+(* Minimum and maximum elements in a list *)
+
 
 (*......................................................................
   Graphical objects
@@ -263,48 +262,18 @@ end
       | hd :: tl -> hd#y :: (splity tl emp)
       | [] -> emp in
 
-    (*let rec splitx (lst : point list) (emp : float list) : float list = 
-      match lst with
-      | hd :: tl ->  let emp = hd#x :: [] in splitx tl emp
-      | [] -> emp in 
-
-
-    let rec splity (lst : point list) (emp : float list) : float list = 
-      match lst with
-      | hd :: tl -> let emp = hd#y :: [] in splity tl emp
-      | [] -> emp in*)
-
     let minix = minimum (splitx points []) in 
     let miniy = minimum (splity points []) in 
     let maxix = maximum (splitx points []) in
     let maxiy = maximum (splity points []) in 
     set_line_width linewidth;
     set_color col;
-    (*fill_rect (int_of_float(minix -. float_of_int border)) (int_of_float(miniy -. float_of_int border)) (int_of_float(maxix +. float_of_int border)) (int_of_float(maxiy +. float_of_int border));*)
     set_color color;
-    draw_rect ((int_of_float minix) - border) ((int_of_float miniy) - border) ((int_of_float (maxix -. minix) ) + 2*border) ((int_of_float (maxiy -. miniy)) + 2*border);
+    draw_rect ((int_of_float minix) - border) 
+              ((int_of_float miniy) - border) 
+              ((int_of_float (maxix -. minix) ) + 2*border) 
+              ((int_of_float (maxiy -. miniy)) + 2*border);
     set_color textcolor   
-
-    (*method draw =
-    let (x, y) = (minimum points)#pos in
-    let (x', y') = (maximum points)#pos in 
-    set_line_width linewidth;
-    set_color background;
-    fill_rect (int_of_float(x -. float_of_int border)) (int_of_float(y -. float_of_int border)) (int_of_float(x' +. float_of_int (2*border))) (int_of_float(y' +. float_of_int (2*border)));
-    set_color color;
-    draw_rect (int_of_float(x -. float_of_int border)) (int_of_float(y -. float_of_int border)) (int_of_float(x' +. float_of_int (2*border))) (int_of_float(y' +. float_of_int (2*border)));
-    set_color textcolor*)
-
-    (*method draw =
-    let (x, y) = (minimum points)#pos in
-    let (x', y') = (maximum points)#pos in 
-    set_line_width linewidth;
-    set_color background;
-    (*fill_rect (int_of_float(x -. float_of_int border)) (int_of_float(y -. float_of_int border)) (int_of_float(x' +. float_of_int (2*border))) (int_of_float(y' +. float_of_int (2*border)));*)
-    set_color color;
-    draw_rect (int_of_float x - border) (int_of_float y - border) (int_of_float x' + (2*border)) (int_of_float y' + (2*border));
-    set_color textcolor*)
- 
 
 
 end
@@ -319,4 +288,4 @@ future assignments.
 ......................................................................*)
 
 let minutes_spent_on_part () : int =
-  failwith "no time estimate provided for graphobj" ;;
+  360 ;;
